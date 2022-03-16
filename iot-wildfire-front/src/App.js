@@ -1,9 +1,10 @@
 import './App.css';
+import CardContainer from './containers/card/card';
 
 function App() {
   return (
     <div className="App">
-      IOT WILDFIRE
+        <CardContainer/>
     </div>
   );
 }
