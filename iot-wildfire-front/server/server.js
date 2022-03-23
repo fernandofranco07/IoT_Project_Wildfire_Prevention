@@ -4,6 +4,9 @@ const cors = require('cors')
 //const fs = require('fs')
 const https = require('https')
 
+//import routes to use
+const router = require('./routes/index.js')
+
 const app = express()
 
 const PORT = 8080
@@ -24,8 +27,19 @@ app.use(json())
 app.use(urlencoded({extended:false}))
 app.use(cors())
 
+//send request to the router
+app.use(router)
+
 //start https server
 //let server = https.create(options,app)
 //server.listen(PORT,()=>{console.log(`Server on port: ${PORT} and host ${HOST}`)})
 
 app.listen(PORT,HOST,()=>{console.log(`Server on port: ${PORT} and host ${HOST}`)});
+
+// app.get('/', function(req, res) {
+//     res.send("Hello World!");
+// });
+
+
+// let server = http.createServer(app)
+// server.listen(PORT,'localhost',()=>{console.log(`Server on port: ${server.address().port} and host ${server.address().address}`)})
