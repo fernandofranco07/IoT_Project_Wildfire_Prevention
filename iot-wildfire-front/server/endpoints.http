@@ -1,0 +1,9 @@
+@host = http://localhost:8080/api
+
+POST {{host}}/temperature/register
+Content-Type: application/json
+
+{
+    "sensorId":3,
+    "temperature":200
+}
