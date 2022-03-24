@@ -1,3 +1,58 @@
 [
-    
+  {
+    "uid": 1,
+    "sensorId": 3,
+    "temperature": 200,
+    "timestamp": 1648150805259,
+    "dateTime": "2022-03-24T19:40:05.260Z"
+  },
+  {
+    "uid": 2,
+    "sensorId": 3,
+    "temperature": 200,
+    "timestamp": 1648150806171,
+    "dateTime": "2022-03-24T19:40:06.171Z"
+  },
+  {
+    "uid": 3,
+    "sensorId": 3,
+    "temperature": 200,
+    "timestamp": 1648150807002,
+    "dateTime": "2022-03-24T19:40:07.002Z"
+  },
+  {
+    "uid": 4,
+    "sensorId": 3,
+    "temperature": 200,
+    "timestamp": 1648150807895,
+    "dateTime": "2022-03-24T19:40:07.895Z"
+  },
+  {
+    "uid": 5,
+    "sensorId": 3,
+    "temperature": 200,
+    "timestamp": 1648150808766,
+    "dateTime": "2022-03-24T19:40:08.766Z"
+  },
+  {
+    "uid": 6,
+    "sensorId": 3,
+    "temperature": 200,
+    "timestamp": 1648152058583,
+    "dateTime": "2022-03-24T20:00:58.583Z"
+  },
+  {
+    "uid": 7,
+    "sensorId": 3,
+    "temperature": 200,
+    "timestamp": 1648152059788,
+    "dateTime": "2022-03-24T20:00:59.788Z"
+  },
+  {
+    "uid": 8,
+    "sensorId": 3,
+    "temperature": 200,
+    "timestamp": 1648152064704,
+    "dateTime": "2022-03-24T20:01:04.704Z"
+  }
 ]

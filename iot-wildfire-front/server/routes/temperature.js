@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const fs = require('fs')
+const db = require('../helpers/database')
 
 //TODO returns the current temperature for a sensor given its id
 // router.get('/show')
@@ -9,7 +10,7 @@ const fs = require('fs')
 router.get('/history',(req,res)=>{
     try{    
         //read db.json
-        let dbJSON  = JSON.parse(fs.readFileSync('server/db.json'))
+        let dbJSON = db.read()
 
         res.status(200).send(dbJSON)
     }catch(error){
@@ -26,9 +27,8 @@ router.post('/register',(req,res)=>{
         let {sensorId, temperature} = req.body
         if(sensorId !== undefined && temperature !== undefined){
 
-            //read the db.json and parse it to a js object
-            let dbJSON = JSON.parse(fs.readFileSync('server/db.json'))
-
+            //read the db.json 
+            let dbJSON = db.read()
             //create the new data to store in the db.json
             let data = {
                 uid:dbJSON.length == 0 ? 1 : Math.max.apply(Math,dbJSON.map(function(o){return o.uid;})) + 1,
@@ -41,7 +41,7 @@ router.post('/register',(req,res)=>{
             //append the date to the db.json
             dbJSON.push(data)
             //save the new version of the db by overwritting the old db.json
-            fs.writeFileSync('server/db.json',JSON.stringify(dbJSON))
+            db.write(dbJSON)
 
             res.status(200).send({'Success':'Temperature registered'})
 
