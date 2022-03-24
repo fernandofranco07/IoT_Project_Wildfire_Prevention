@@ -4,8 +4,18 @@ const fs = require('fs')
 //TODO returns the current temperature for a sensor given its id
 // router.get('/show')
 
-//TODO returns all of the stored temperatures for a sensor given its id
-// router.get('/history')
+//returns all of the stored temperatures for a sensor given its id
+//FIXME Use DynamoDB instead of the db.json file
+router.get('/history',(req,res)=>{
+    try{    
+        //read db.json
+        let dbJSON  = JSON.parse(fs.readFileSync('server/db.json'))
+
+        res.status(200).send(dbJSON)
+    }catch(error){
+        res.status(400).send({'Error while obtaining the temperature data':error})        
+    }
+})
 
 //Register a new temperature for a sensor given its id
 //FIXME Use DynamoDB instead of the db.json file
