@@ -7,3 +7,6 @@ Content-Type: application/json
     "sensorId":3,
     "temperature":200
 }
+
+###
+GET {{host}}/temperature/history
