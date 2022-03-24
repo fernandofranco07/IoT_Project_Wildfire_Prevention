@@ -24,12 +24,12 @@ router.post('/register',(req,res)=>{
                 uid:dbJSON.length == 0 ? 1 : Math.max.apply(Math,dbJSON.map(function(o){return o.uid;})) + 1,
                 sensorId: sensorId,
                 temperature: temperature,
-                dateTime: +new Date()
+                timestamp: +new Date(), //used for comparisons
+                dateTime: new Date() // used to display it in the front end
             }
 
             //append the date to the db.json
             dbJSON.push(data)
-            
             //save the new version of the db by overwritting the old db.json
             fs.writeFileSync('server/db.json',JSON.stringify(dbJSON))
 
