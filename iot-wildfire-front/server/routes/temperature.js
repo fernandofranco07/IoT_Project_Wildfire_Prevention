@@ -21,7 +21,7 @@ router.post('/register',(req,res)=>{
 
             //create the new data to store in the db.json
             let data = {
-                uid:dbJSON.length == 0 ? 1 : Math.max.apply(Math,dbJSON.map(function(o){return o.id;})) + 1,
+                uid:dbJSON.length == 0 ? 1 : Math.max.apply(Math,dbJSON.map(function(o){return o.uid;})) + 1,
                 sensorId: sensorId,
                 temperature: temperature,
                 dateTime: +new Date()
