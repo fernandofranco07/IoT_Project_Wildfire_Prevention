@@ -1,32 +1,58 @@
 #include "math.h"
-#include "LowPower.h"
+//#include "LowPower.h"
+#include <TinyGPS++.h>
+#include <SoftwareSerial.h>
 
-const int sensorPin = A0;
+/************** Air Quality Sensor *************/
+/* Air Quality Sensor Pin (ADC0) */
+const int sensorAirPin = A0;
+/* Ro given value for calculating the C02 ppm */
 const int Ro = 1200;
-//Programa de ejemplo para enviar informacion por medio de Sigfox
-//representacion en hexadecimal de un entero (1 byte) o de un 1 flotante a 32 bits en little-endian
-//Al presionar el boton azul se envia un mensaje
-const int boton=6;
-const int enable=7;
-int randNumber;
+
+/**************** GPS Sensor ******************/
+/* Virtual Serial Port (UART) Baudrate  */
+static const uint32_t GPSBaud = 9600;
+// The TinyGPS++ object
+TinyGPSPlus gps;
+/* Float Variables to Store Lat & Lng data */
+static float g_latitude, g_longitude;
+
+/************* SigFox Module ******************/
+const int WISOL_enable = 7;
+String bufer; // String var to store the payload to send
+String bufer2="\n"; // New line to add into our payload
+
+/********** Virtual Serial Port ***************/
+/* Virtual Serial Port (UART) Pins  */
+static const int RXPin = 12, TXPin = 11;
+// The serial connection to the GPS device
+SoftwareSerial mySerial(RXPin, TXPin);
+
+/********** General  Definitions ***************/
+const int blue_button = 6;
+
+/***** Sig Fox Messaging ******/
 //*****************************************************
-String bufer; //variable donde guardaremos nuestro payload
-String bufer2="\n";   //agregamos un salto de linea al final de nuestro payload
+
 //*****************************************************
 
 void setup() 
 {
   Serial.begin(9600);
-  pinMode(boton, INPUT);
-  pinMode(enable, OUTPUT);   //enable modulo wisol
+  mySerial.begin(GPSBaud);
+  pinMode(blue_button, INPUT);
+  pinMode(WISOL_enable, OUTPUT);   //enable modulo wisol
 }
 
 void loop() 
 {
-	if (digitalRead(boton)==LOW)
-	{
+	if (digitalRead(blue_button)==LOW)
+	{		
 		read_airSensor();
+		read_GPS();
+		send_message(bufer); //enviamos nuestro dato por Sigfox
 	}
+	
 	
 //LowPower.idle(SLEEP_8S, ADC_OFF, TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, 
 //			  SPI_OFF, USART0_OFF, TWI_OFF);
@@ -38,18 +64,32 @@ void read_airSensor() {
   //AT$SF= comando para mandar la informacion por sigfox Maximo 12 bytes*/  
   bufer="AT$SF="; 
   
-  int adc_MQ = analogRead(sensorPin);      //Lemos la salida analógica  del MQ
+  int adc_MQ = analogRead(sensorAirPin);      //Lemos la salida analógica  del MQ
   float voltaje = adc_MQ * (5.0 / 1023.0); //Convertimos la lectura en un valor de voltaje
   float Rs=1000*((5-voltaje)/voltaje);     //Calculamos Rs con un RL de 1k
   float CO2_ppm = 106.5*pow(Rs/Ro,-1.49);  // calculamos la concentración  de CO2 con la ecuación obtenida.
 
   /**************************************************
   agregamos nuestra variable al payload a enviar*/
-  add_float(CO2_ppm);
-  
-  //enviamos nuestro dato por Sigfox
-  send_message(bufer);
+  add_float(CO2_ppm);  
 }
+
+void read_GPS()
+{
+	while (mySerial.available() > 0)
+	{
+		gps.encode(mySerial.read());
+		
+		if (gps.location.isUpdated())
+		{
+		  g_latitude = (float) gps.location.lat();
+		  add_float(g_latitude);
+		  g_longitude = (float) gps.location.lng();
+		  add_float(g_longitude);
+		}
+	}
+}
+
 
 void add_float(float var1) //funcion para agregar flotantes al payload en formato little-endian
 {
@@ -76,7 +116,7 @@ void send_message(String payload)
   bufer+=bufer2;
   //*******************
   //Habilitamos el modulo Sigfox
-  digitalWrite(enable, HIGH);
+  digitalWrite(WISOL_enable, HIGH);
   delay(1000);
   //Reset del canal para asegurar que manda en la frecuencia correcta
   Serial.print("AT$RC\n"); 
@@ -85,5 +125,5 @@ void send_message(String payload)
   Serial.print(bufer);
   delay(3000);
   //deshabilitamos el modulo Sigfox
-  digitalWrite(enable, LOW);
+  digitalWrite(WISOL_enable, LOW);
 }
