@@ -1,0 +1,4 @@
+applications:
+  - name: iot-wildfire
+    memory: 128M
+    buildpack: nodejs_buildpack 
