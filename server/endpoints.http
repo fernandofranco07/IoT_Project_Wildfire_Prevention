@@ -1,4 +1,5 @@
 @host = http://localhost:8080/api
+# @host = https://iot-wildfire.mybluemix.net/api
 
 POST {{host}}/temperature/register
 Content-Type: application/json

@@ -1,0 +1,18 @@
+// Navbar styles
+@import '../../constants.scss';
+
+.container{
+  max-width: 100%;
+}
+
+.Navbar{
+  background-color: rgb(123,21,37);
+  padding: 1rem;
+  border: 1px solid;
+  .navbar-text{
+    color: $white;
+  }
+  .navbar-text:hover{
+    color: rgb(187, 50, 71);
+  }
+}
