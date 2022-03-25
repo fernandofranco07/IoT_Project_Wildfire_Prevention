@@ -20,6 +20,9 @@ const HOST = '0.0.0.0'
 //     cert:certificate
 // }
 
+//server static build of react project
+app.use(express.static(path.normalize('build')))
+
 const {json, urlencoded} = express
 
 //basic parse configuration
