@@ -8,7 +8,7 @@ import { notification } from 'antd';
 import Button from '@mui/material/Button';
 
 
-const CardContainer  = () => {
+const DashboardContainer  = () => {
   const openNotificationWarning = () =>{
     notification.warning({
       message: 'Hey man watch out with the fire',
@@ -44,4 +44,4 @@ const CardContainer  = () => {
   );
 }
 
-export default CardContainer
+export default DashboardContainer
