@@ -1,4 +1,7 @@
 applications:
   - name: iot-wildfire
-    memory: 128M
+    memory: 256M
     buildpack: nodejs_buildpack 
+    instances: 1
+    path: .
+    command: npm run deploy

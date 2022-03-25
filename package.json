@@ -14,7 +14,6 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "nodemon": "^2.0.15",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -26,7 +25,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "nodemon server/server.js",
-    "prod": "react-scripts build && node server/server.js"
+    "prod": "react-scripts build && node server/server.js",
+    "deploy": "node server/server.js"
   },
   "eslintConfig": {
     "extends": [
@@ -45,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
