@@ -2,7 +2,7 @@ const express = require('express')
 const path = require('path')
 const cors = require('cors')
 //const fs = require('fs')
-const https = require('https')
+// const https = require('https')
 
 //import routes to use
 const router = require('./routes/index.js')
@@ -19,6 +19,9 @@ const HOST = '0.0.0.0'
 //     key: key,
 //     cert:certificate
 // }
+
+//server static build of react project
+app.use(express.static(path.normalize('build')))
 
 const {json, urlencoded} = express
 

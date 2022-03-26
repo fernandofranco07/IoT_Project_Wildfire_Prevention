@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.min.css';
-import 'semantic-ui-css/semantic.min.css';
+// import 'semantic-ui-css/semantic.min.css'; //causa errores al importar el paquete semantic-ui-css FIXME
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
