@@ -54,8 +54,8 @@ void add_int(int var2, bool is_Air_sensor)    //funcion para agregar enteros al 
   byte* a2 = (byte*) &var2; //convertimos el dato a bytes
   String str2;
 
-//  Serial.println("\n---- Adding Int String to Bufer ----");
-//  Serial.println((String)"OG Value = "+var2);
+  Serial.println("\n---- Adding Int String to Bufer ----");
+  Serial.println((String)"OG Value = "+var2);
   if (is_Air_sensor)
   {
      for(int i=0;i<2;i++)
