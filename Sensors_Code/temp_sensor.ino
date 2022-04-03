@@ -1,6 +1,9 @@
 //Programa de ejemplo utilizando el sensor de temperatura LM35
 //En este caso el dato en entero es transformado a su 
 //representacion en hexadecimal en 1 flotante a 32 bits en little-endian
+
+#include <math.h>
+
 const int boton=6;
 const int sensorPin = A1;
 //*****************************************************
@@ -27,10 +30,14 @@ void leer_temperatura()
   bufer="AT$SF=";
   //-----------------------------------------------------
   //agregamos nuestro valor de la temperatura al payload a enviar
-  add_float(temp); //un flotante ocupa 4 bytes
-
+  int temp_aux = round(temp);
+  
+  add_int(temp_aux,false);
+  
+  Serial.println(temp_aux);
+  Serial.println(bufer);
   //enviamos nuestro dato por Sigfox
- // send_message(bufer);
+  send_message(bufer);
 }
 
 void loop() 
@@ -41,40 +48,46 @@ void loop()
     delay(1000);
   } 
 }
-void add_float(float var1) //funcion para agregar flotantes al payload
-{
-  byte* a1 = (byte*) &var1;    //convertimos el dato a bytes
-  String str1;
-  //agregamos al comando AT$SF= nuestra informacion a enviar
-  for(int i=0;i<4;i++)
-  {
-    str1=String(a1[i], HEX);    //convertimos el valor hex a string 
-    if(str1.length()<2)
-    {
-      bufer+=0+str1;    //si no, se agrega un cero
-    }
-    else
-    {
-      bufer+=str1;    //si esta completo, se copia tal cual
-    }
-  }
-}
-void add_int(int var2)    //funcion para agregar enteros al payload (hasta 255)
+
+void add_int(int var2, bool is_Air_sensor)    //funcion para agregar enteros al payload (hasta 255)
 {
   byte* a2 = (byte*) &var2; //convertimos el dato a bytes
   String str2;
-  str2=String(a2[0], HEX);  //convertimos el valor hex a string 
-  //verificamos si nuestro byte esta completo
-  if(str2.length()<2)
+
+//  Serial.println("\n---- Adding Int String to Bufer ----");
+//  Serial.println((String)"OG Value = "+var2);
+  if (is_Air_sensor)
   {
-    bufer+=0+str2;    //si no, se agrega un cero
+     for(int i=0;i<2;i++)
+     {
+        str2=String(a2[i], HEX);    //convertimos el valor hex a string 
+//        Serial.println((String)"Byte "+i+" = 0x"+str2);
+        if(str2.length()<2)
+        {
+          bufer+=0+str2;    //si no, se agrega un cero
+        }
+        else
+        {
+          bufer+=str2;    //si esta completo, se copia tal cual
+        }
+     }
   }
   else
   {
-    bufer+=str2;     //si esta completo, se copia tal cual
-  }
+      str2=String(a2[0], HEX);  //convertimos el valor hex a string 
+      Serial.println((String)"Byte 0 = 0x"+str2);
+      //verificamos si nuestro byte esta completo
+      if(str2.length()<2)
+      {
+        bufer+=0+str2;    //si no, se agrega un cero
+      }
+      else
+      {
+        bufer+=str2;     //si esta completo, se copia tal cual
+      }      
+  }  
 }
-/*
+
 void send_message(String payload)
 {
   //agregamos el salto de linea "\n"
@@ -92,4 +105,3 @@ void send_message(String payload)
   //deshabilitamos el modulo Sigfox
   digitalWrite(7, LOW);
 }
-*/
