@@ -49,9 +49,9 @@ void loop()
   {   
     read_airSensor();
     read_GPS();
-    send_message(bufer); //enviamos nuestro dato por Sigfox
-//    Serial.println("\n//// Final Bufer Values \\\\");
-//    Serial.println(bufer);
+//    send_message(bufer); //enviamos nuestro dato por Sigfox
+    Serial.println("\n//// Final Bufer Values \\\\");
+    Serial.println(bufer);
   }
   
   
@@ -81,13 +81,14 @@ void read_GPS()
   while (mySerial.available() > 0)
   {
     gps.encode(mySerial.read());
-    
-    if (gps.location.isUpdated())
-    {
-      g_latitude = (float) gps.location.lat();
-      add_float(g_latitude);
-      g_longitude = (float) gps.location.lng();
-      add_float(g_longitude);
+    if (gps.location.isUpdated()){
+      Serial.print("\n");
+      Serial.print("Latitude= "); 
+      Serial.print(gps.location.lat(), 6);
+      Serial.print("\n");
+      Serial.print("Longitude= "); 
+      Serial.print(gps.location.lng(), 6);
+      Serial.print("\n");
     }
   }
 }
